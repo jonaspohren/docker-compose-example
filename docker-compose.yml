@@ -2,12 +2,19 @@ version: '3'
 services:
   node-app:
     build: .
+    restart: always
+    container_name: node-app
     environment:
-      - REDIS_HOST=redis-server
-      - EXPRESS_PORT=3000
+      - REDIS_URL=redis://redis-server:6379
+      - NODE_ENV=development
+      - PORT=3000
     ports:
       - '3000:3000'
     volumes:
       - .:/var/www/app
+      - /var/www/app/node_modules
+    depends_on:
+      - redis-server
   redis-server:
     image: 'redis'
+    container_name: redis

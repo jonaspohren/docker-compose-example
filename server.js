@@ -5,10 +5,7 @@ const config = require('./config')
 
 const app = express()
 
-const client = redis.createClient({
-  host: config.redis.HOST,
-  port: config.redis.PORT
-})
+const client = redis.createClient(config.redis.url)
 
 bluebird.promisifyAll(redis)
 
@@ -20,4 +17,4 @@ app.post('/increment', async (req, res) => {
   res.json(await client.incrAsync('counter'))
 })
 
-app.listen(config.express.PORT)
+app.listen(config.port)
